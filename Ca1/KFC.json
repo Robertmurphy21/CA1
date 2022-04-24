@@ -1,0 +1,62 @@
+{
+    "Resources": {
+
+	"ordertopic": {
+	    "Type": "AWS::SNS::Topic"
+	},
+
+	"onsiteq": {
+	    "Type": "AWS::SQS::Queue"
+	},
+
+	"onsitesubscription": {
+	    "Type": "AWS::SNS::Subscription",
+	    "Properties": {
+		"TopicArn": { "Ref": "ordertopic" },
+		"Protocol": "sqs",
+		"Endpoint": { "Fn::GetAtt": [ "onsiteq", "Arn" ] }
+	    }
+	},
+
+	"onsiteqpolicy": {
+	    "Type": "AWS::SQS::QueuePolicy",
+	    "Properties": {
+		"Queues": [ {"Ref": "onsiteq" } ],
+		"PolicyDocument": {
+		    "Statement": [
+			{
+			    "Effect": "allow",
+			    "Principal":  { "Service":  "sns.amazonaws.com" },
+			    "Action": "SQS:SendMessage",
+			    "Resource": {"Fn::GetAtt": ["onsiteq", "Arn"] },
+			    "Condition": {
+				"ArnEquals": {
+				    "aws:SourceArn": { "Ref": "ordertopic"  }
+				}
+			    }
+			}
+		    ]
+		}
+	    }
+	},
+
+	"menubucket": {
+	    "Type": "AWS::S3::Bucket"
+	}
+    },
+
+    "Outputs": {
+	"menubucketname": {
+	    "Value": { "Ref": "menubucket" },
+	    "Description": "Name of menu bucket (for order station)"
+	},
+	"ordertopicarn": {
+	    "Value": { "Ref": "ordertopic" },
+	    "Description": "Order topic ARN (for order station)"
+	},
+	"onsitequrl": {
+	    "Value": { "Ref": "onsiteq" },
+	    "Description": "Onsite queue URL (for order monitor)"
+	}
+    }
+}

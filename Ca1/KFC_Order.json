@@ -1,0 +1,15 @@
+{
+    "customer": "mary",
+    "items": [
+	{
+	    "quantity": 1,
+	    "item": "Latte",
+	    "requests": "Extra hot"
+	},
+	{
+	    "quantity": 2,
+	    "item": "Cappuccino",
+	    "requests": "full fat milk"
+	}
+    ]
+}

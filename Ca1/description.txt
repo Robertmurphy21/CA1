@@ -1,0 +1,6 @@
+Description of My system.
+
+The System that I am creating will set be setting up a Ordering system for KFC. 
+The main idea for this system is too place a order and view each order that is being placed 
+and the quantity of the specific along with who buys it
+
